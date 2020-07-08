@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table view</title>
+<meta charset="utf-8" />
+<link href="table.css" rel="stylesheet">
+</head>
+<body>
+<div id="myExel">
+    
+    <myform id="forma"
+    :choosen="choosen"
+    :storage="storage" 
+    :locale="locale"
+    :lang="lang"
+    :flag="flag"
+    @add="add" 
+    @save="save"
+    @clear="clear"
+    @clean="clean"  
+    @deleterow="deleterow"
+    @importjson="importjson"
+    :change_locale="change_locale"></myform>
+ 
+    <information :storage="storage[0]"></information>
+ 
+  <choosen_component  v-for="(value, index) in storage"
+                    :key="index"
+                    :choosen_one="value"
+                    :index="index"
+                    @row='row'
+                    @userchange="choose" 
+                    >
+        </choosen_component>
+ 
+   
+</div>
+<script src="FileSaver.js"></script>
+<script src="https://unpkg.com/vue"></script>
+<script>
+Vue.component('myform', {
+    props: 
+        ["choosen","currentKey", "currentIndex","storage","locale","lang","flag",//properties
+        'change_locale'],//methods
+    data: function(){
+        return {
+            json_warning: ""
+        }
+    },
+
+    template: `<div>
+                <div>Efectura table editor</div>
+                <input type="text" v-model="choosen.key" @click="log(choosen.key)"/>
+                <span class="buttonTop" @click="save">{{lang?locale.save[0]:locale.save[1]}}</span>
+                <span class="buttonTop" @click="add">{{lang?locale.add[0]:locale.add[1]}}</span>
+                <span class="buttonTop" @click="deleterow">{{lang?locale.del_row[0]:locale.del_row[1]}}</span>
+                <span class="buttonTop" @click="clear">{{lang?locale.clear[0]:locale.clear[1]}}</span>
+                <span class="buttonTop" @click="clean">{{lang?locale.clean[0]:locale.clean[1]}}</span>
+                <textarea ref="myarea"></textarea>
+                <span>{{json_warning}}</span>
+                <span class="buttonTop" @click="import_from_json">{{lang?locale.ipmjson[0]:locale.ipmjson[1]}}</span>
+                <span class="buttonTop" @click="export_to_json">{{lang?locale.expjson[0]:locale.expjson[1]}}</span>
+                <input type="file" id="inputnode">
+                <span class="buttonTop" @click="import_file">{{lang?locale.impfile[0]:locale.impfile[1]}}</span>
+                <span class="buttonTop" @click="export_file">{{lang?locale.expfile[0]:locale.expfile[1]}}</span>
+                <span class="buttonTop" @click="import_csv">{{lang?locale.impcsv[0]:locale.impcsv[1]}}</span>
+                <span class="buttonTop" @click="export_csv">{{lang?locale.expcsv[0]:locale.expcsv[1]}}</span>
+                <span class="buttonTop" @click='change_locale'>{{lang?locale.language[0]:locale.language[1]}}
+                    <img src="img/planet.png" :class=flag>
+                </span>
+   
+            </div>`,
+    methods: {
+        log: function(choosen){
+            console.log(choosen.my)
+        },
+        add: function(type){
+            console.log("type");
+            this.$emit('add', "row")        
+        },
+        clear: function(){
+            this.$emit('clear')},
+        clean: function(){
+            this.$emit('clean')},
+        save: function(){
+            this.$emit('save')},
+        deleterow: function(){
+            this.$emit('deleterow')},
+        export_to_json: function(){
+            this.$refs.myarea.innerText = JSON.stringify(this.storage);    
+        },
+        export_file: function(){
+            let a= JSON.stringify(this.storage);
+            var blob = new Blob([a], {type: "text/plain;charset=utf-8"});saveAs(blob, "table.json");
+        },
+        export_csv: function(){
+let a= JSON.stringify(this.storage);
+    var blob = new Blob([a], {type: "text/csv"});//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    saveAs(blob, "table.csv");
+        },
+        import_file: function(){ 
+            let textareaa  =  this.$refs.myarea;          
+let node = document.getElementById('inputnode');
+let reader = new FileReader();
+reader.onload = function (){
+    console.log(reader.result);
+    textareaa.innerText = reader.result;
+}
+reader.readAsText(node.files[0]);
+
+
+        },
+        import_csv: function(){
+            let textareaa  =  this.$refs.myarea;
+            let node = document.getElementById('inputnode');
+let reader = new FileReader();
+reader.onload = function (){
+    console.log(reader.result)
+    textareaa.innerText = reader.result;
+}
+reader.readAsText(node.files[0])
+
+
+/*
+fetch(a.value)
+  .then(response => response.json())
+  .then(json => console.log(json));
+  */
+
+        },
+        import_from_json: function(){
+            let a; 
+            let error = false;
+            if (this.$refs.myarea.value.length!=0 && this.$refs.myarea.value[0]=="["){
+               try{
+                   a = JSON.parse(this.$refs.myarea.value)}
+                   catch(err){
+                       //console.warn(err)
+                       if (this.lang) this.json_warning=this.locale.jsonwarn[0]
+                      else this.json_warning=this.locale.jsonwarn[1];
+                       error=true;
+                   }
+
+            }
+                console.log(a)
+           if (a !=undefined && error==false) {
+               this.$emit('importjson', a);
+               
+               this.json_warning=""
+           }
+          // for (let i=0; i<=a.length; i++ ){
+           //     this.storage[i] = a[i]
+            //}
+        }
+    }
+});
+Vue.component('choosen_component', {
+    props: ["choosen_one", "index"],
+    template: `<div v-on:click="row" class="d" >
+    
+    <div class="content num">{{index+1}})</div>
+    <div class="content" 
+    v-for="(value, key) in choosen_one" 
+    v-on:click="userChange(index,key)">{{choosen_one[key]}}</div>
+
+ 
+ </div>`,
+    methods: {
+        userChange: function(index, key){
+            let temp = [index, key]
+            this.$emit('userchange', temp, index);
+                    },
+    row: function(key){
+        this.$emit('row', this.index);
+    }
+    }
+});
+
+Vue.component('information', {
+    props: ["storage"],
+    template: `
+    <div class="d">
+    <div class="info num">№</div>
+    <div class="info" v-for="(value, key) in storage">{{key}}</div>
+ </div>
+`,
+    methods: {
+    }
+});
+
+
+
+
+
+
+
+
+
+
+new Vue({
+    el: "#myExel",
+    data: {
+        locale: {save:['Save',"Сохранить"],language:['Swith language',"Поменять язык"],
+        ipmjson:['Import from JSON',"Импортировать из JSON"],expjson:['Export to JSON',"Экспортировать в JSON"],
+        add:['Add row',"Добавить строку"],del_row:['Delete row',"Удалить строку"],clear:['Reset choosen',"Убрать выделение"],
+        clean:['Clean',"Очистить ячейку"],
+        impfile:['Import JSON file',"Импортировать JSON файл"],expfile:['Export JSON file',"Экспортировать JSON файл"],
+        impcsv:['Import CSV file',"Импортировать CSV файл"],expcsv:['Export CSV file',"Экспортировать CSV файл"],
+        jsonwarn:['JSON expected',"Ошибка в JSON"],
+
+        },
+        lang: true,
+        flag: "fflag",
+        storage:[
+            {name:"John",value:"nice guy"},
+            {name:"Helen",value:"just helen"},
+            {name:"Bill",value:"Gates"},
+            {name:"Joe",value:"age - 35"},
+        
+        ],
+        choosen:{key:""},
+        currentIndex: undefined,
+        currentKey: undefined,
+        currentRow: undefined
+    },
+    methods:{
+        choose: function(temp,index){
+            console.log(temp[1]);
+            this.choosen = {key: this.storage[temp[0]][temp[1]]};
+            this.currentIndex = temp[0];
+            this.currentKey = temp[1];
+            this.currentRow = index;
+            console.log(this.choosen.key);
+        },
+        add: function(type){
+            console.log(type);
+           
+                let newObj={};
+        for (let key in this.storage[0]){
+        newObj[key]=""
+        };
+            this.storage.push(newObj);
+            
+        },
+        save: function(){
+            if (this.currentKey!=undefined && this.currentIndex!=undefined)
+        this.storage[this.currentIndex][this.currentKey] = this.choosen.key;           
+        },
+        clear: function(){
+        this.currentIndex =undefined;
+        this.currentKey = undefined;
+        this.choosen.key = '';         
+        },
+        clean: function(){
+            if (this.currentKey!=undefined && this.currentIndex!=undefined)
+        this.storage[this.currentIndex][this.currentKey] = '';       
+        },
+        row: function(row){
+        this.currentRow = row; 
+        console.log(this.currentRow)     
+        },
+        deleterow: function(){
+            console.log("del")
+            if (this.currentRow != undefined)
+            this.storage.splice((this.currentRow),1)
+        },
+        importjson: function(a){
+            this.storage = a;
+        },
+        change_locale: function(){
+            this.lang = !this.lang;
+        }
+         
+    }
+        
+       
+    
+});
+
+
+</script>
+
+</body>
+</html>

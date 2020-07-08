@@ -1,0 +1,52 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+td{
+background-color: aqua;
+cursor: pointer;
+}
+.d{
+display: flex;
+justify-content: space-around;
+
+}
+.content{
+margin: 0;
+border: 1px solid black;
+background-color: rgba(191, 233, 135, 0.733);
+cursor: pointer;
+width: 48%;
+text-align: center;
+}
+
+.info{
+    margin: 0;
+    border: 1px solid black;
+background-color: gainsboro;
+width: 48%;
+text-align: center;
+}
+.num{
+    width: 4%;
+    }
+#forma{
+background-color: gold;
+}
+.buttonTop{
+    background-color: beige;
+    cursor: pointer;
+}
+.flag{
+    width: 5vh;
+    margin: 0;
+    top: 4px;
+    position: relative;
+}
+.fflag{
+    width: 5vh;
+    margin: 0;
+    top: 4px;
+    position: relative;
+}
+
