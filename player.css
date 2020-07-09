@@ -1,0 +1,259 @@
+.Player {font-size: 1em;  box-sizing: border-box; width: 75vw;  padding: 0px 7px; margin: 0 5vw 0 20vw;  color: yellow; transition-duration: 0.5s;}
+.PlayerF {  width: auto; margin: 0;}
+
+.Player .ShopName{  font-weight: bold;  text-align: center;}
+.Player .Lists{ padding-top: 5px;}
+
+.Player .Lists .List{  padding: 0px 5px;  display: flex;  flex-basis: auto; align-content: space-between; justify-content: space-between; align-items: center;color: yellow;}
+.Player .Lists .List :hover{color: orange; transition-duration: 1s; }
+.Player .Lists .List .Action{     flex-basis: 16.6%; font-weight: bold;text-align: center;flex-direction: column;
+    display: flex;}
+.Player .Lists .List .Text{    flex-basis: 5%;    text-align: center;}
+.Player .Lists .List .Description{    flex-basis: 45%;    text-align: center;    font-style:italic;}
+.Player .List .List .Imga{    flex-basis: 16.6%;    text-align: center;    font-size: 9px;}
+
+.Animation { height: 0px; opacity: 0;  transition-duration:0.5s;}
+
+.None {height: 220px;}
+.NoneS {height: 110px;}
+.NoneS:hover{background-color: rgba(255, 255, 255, 0.3); transition-duration: 1s;}
+.None:hover{background-color: rgba(255, 255, 255, 0.3); transition-duration: 1s;}
+
+.Lists .Blue {background-color: rgba(255, 255, 255, 0.7); transition-duration: 1.0s; }
+.Red {color: red;}
+
+.Card {border: dotted green 1px; width: 40vw; padding: 3px 7px;  margin: 10px auto; background-color: lightgreen}
+.Card .ViewInput {min-width: 20vw;}
+.Card .ViewDiv {min-width: 5vw; float: left}
+
+.leftPannel {
+    transition-duration: 1s;
+    display: flex;
+    flex-direction: column;
+    
+    width: 20vw;
+    
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.MainPage{
+    background-color:  rgba(255, 255, 255, 0.3);
+    color: greenyellow;
+    font-size: 4em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-style: italic;
+}
+
+.addsPannel{
+    transition-duration: 1s;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-basis: 300px;
+    width: 10vw;
+    height: 90vh;
+    position: absolute;
+    right:  0;
+    top: 0;
+}
+
+
+.Player .Lists .List Img:hover{
+    transition-duration: 1s; transform: scale(1.2);
+}
+
+.bottomPannel img:hover{
+    transition-duration: 1s; transform: scale(1.2);
+}
+
+
+.AnimationLeftPannel { transform: translateX(-500px);height: 50vh; opacity: 0;  transition-duration:1s;}
+
+.bottomPannel {
+    transition-duration: 1s;
+    background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+    height: 15vh;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+.Main{
+    margin: 0; padding: 0; min-height: 100vh;
+    background-image: url('/source/img/back.jpg'); 
+    background-attachment: fixed;
+    background-repeat: no-repeat; background-size: cover;
+}
+
+.Body{
+    margin: 0; padding: 0; height: 100vh;
+}
+
+.Title{
+    text-align: center; font-size: 45px; font-style: italic; color: greenyellow
+}
+
+.Brick{
+    height: 15vh;
+}
+
+.Logo2{
+    background-image: url("/source/img/logo.png");
+    transition-duration: 0.5s;
+     height: 0;
+     background-size: contain;
+     background-repeat: no-repeat;
+         margin: 0 28vw;
+}
+
+.Logo{
+
+    transition-duration: 0.5s;
+     height: 20vh;
+
+         margin: 0 40vw;
+}
+
+.Open2 {
+    opacity: 0;
+    transition-duration: 0.5s;
+}
+
+.Open {
+    opacity: 1;
+    position: fixed;
+    
+    transition-duration: 0.5s;
+    top: 5vh;
+}
+
+.imgstyleA{
+    height: 10vW;
+}
+
+.imgstyleS{
+    height: 6vW;
+}
+#SearchInput{
+    width: 50%;
+    height: 2vw;
+    color: yellow;
+    font-size: 2vw;
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', Times, serif;   
+    background-color: rgba(255, 255, 255, 0.5);
+
+}
+
+.ListCount{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+    justify-content: start;
+    padding: 0 20px;
+}
+
+.ListCountElement{
+    flex-basis: auto;
+    margin: 0 10px;
+    transition-duration: 1s;
+}
+.ListCountElement:hover{
+    color: orange;
+    cursor: pointer;
+}
+
+#BottomImg{
+    height: 15vh;
+}
+
+.bottomImg{
+    max-height: 80px;
+}
+
+input {
+    background: transparent;
+    color: lightgreen;
+    transition-duration: 1s;
+}
+input:hover {
+    color: orange;
+    background-color: gray;
+    cursor: pointer;
+}
+ 
+@media all and (max-width:1300px)
+
+{
+.Player{
+    font-size: 0.8em;
+}
+
+
+.bottomImg{
+    max-height: 60px;
+}
+}
+
+@media all and (max-width:1000px)
+
+{
+.Player{
+    font-size: 0.7em;
+}
+
+.ListCountElement{
+    margin: 0 5px;
+}
+
+.Player input{
+    font-size: 1em;
+}
+
+
+.bottomImg{
+    max-height: 40px;
+}
+}
+
+@media all and (max-width:775px)
+
+{
+.ListCountElement{
+    margin: 0 2px;
+}
+
+.None{
+    height: 290px;
+}
+}
+
+@media all and (max-width:601px)
+
+{
+
+    .leftPannel {
+        transition-duration: 1s;
+        display: flex;
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.7);
+        width: 100vw;
+        height: 100%;
+        
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
+
+    .leftPannel input {
+        font-size: 2em;
+    }
+
+
+    
+
+}

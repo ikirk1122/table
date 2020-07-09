@@ -20,6 +20,17 @@ font-family: 'Open Sans Condensed', sans-serif;
     border-radius: 5px;
     height: 2vw;
 }
+#infoinput{
+    font-family: cursive;
+    font-size: 1.5vw;
+    display: block;
+    float: left;
+    margin: 0 1vw;
+    background-color: #91ffe136;
+    border: 0;
+    border-radius: 5px;
+    height: 2vw;
+}
 .content{
 margin: 0;
 border: 1px solid black;
@@ -27,7 +38,7 @@ background-color: rgba(191, 233, 135, 0.548);
 cursor: pointer;
 width: 45%;
 text-align: center;
-font-size: 1.5vw;
+
 }
 .content:hover{
     background-color: gainsboro;
@@ -41,15 +52,14 @@ font-size: 1.5vw;
 background-color: gainsboro;
 width: 45%;
 text-align: center;
-font-size: 1.5vw;
+
 }
 .num{
     width: 4%;
     }
 #forma{
 background-color: azure;
-font-size: 1.4vw;
-
+font-size: 1.5vw;
 font-family: 'Playfair Display', serif;
 padding: 5px;
 }
@@ -80,10 +90,11 @@ span:hover{
 #main{
     margin: 2vh 0 0 0;
     clear: both;
+    font-size: 1.5vw;
 }
 .choosenitem{
-    background-color: gold;
-    transition-duration: 200ms;
+    background-color: rgb(172, 172, 172);
+    transition-duration: 500ms;
 
 }
 #title{
@@ -113,6 +124,8 @@ textarea{
     border-radius: 5px;
     resize: none;
     height: 1.9vw;
+    width: 25%;
+    margin: 0 1vw;
 }
 
 label:hover {
@@ -127,3 +140,100 @@ label:hover {
     background-color: gainsboro;
     transition-duration: 200ms
 }
+#holder{
+    clear: both;
+}
+#menu{
+    text-align: center;
+}
+
+
+@media all and (max-width:890px){
+
+#forma{
+    font-size: 1.6vw;
+    }
+    #main{
+        margin: 1.5vh 0 0 0;
+        clear: both;
+        font-size: 1.9vw;
+    }
+    #title{
+        font-size: 2vw;
+    }  
+    #myinput{
+        height: 2.5vw;
+    }
+    #infoinput{
+        height: 2.5vw;
+    }
+    textarea{
+        height: 2.5vw;
+        width: 25%;
+    
+    }   
+}
+
+@media all and (max-width:759px){
+
+    #forma{
+    background-color: azure;
+    font-size: 1.4vw;
+    font-family: 'Playfair Display', serif;
+    padding: 5px;
+    flex-basis: 35%;
+        }
+        
+.buttoncontainer {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+
+}
+#menu{
+    font-size:2.5vw; 
+}
+        #myExel{
+            display: flex;
+        }
+        #main{
+            margin: 1.5vh 0 0 0;
+            clear: both;
+            font-size: 2.5vw;
+            flex-basis: 65%;
+        }
+        #title{
+            font-size: 3vw;
+        }  
+        #myinput{
+            height: 3vw;
+            width: 100%;
+            font-size: 3vw;
+            margin: 0.5vw 0vw;
+        }
+        #infoinput{
+            height: 3vw;
+            width: 100%;
+            font-size: 3vw;
+            margin: 0.5vw 0vw;
+        }
+        textarea{
+            height: 3vw;
+            width: 100%;
+            margin: 0.5vw 0vw;
+        
+        }
+        .title{
+            width: 3vw;
+            margin: 0;
+            top: 2px;
+            position: relative;;
+        }
+        .flag{
+            width: 3vw;
+            margin: 0;
+            top: 4px;
+            position: relative;;
+        }
+          
+    }
