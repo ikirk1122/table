@@ -3,6 +3,7 @@
 <head>
 <title>Table view</title>
 <meta charset="utf-8" />
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Playfair+Display&display=swap" rel="stylesheet">
 <link href="table.css" rel="stylesheet">
 </head>
 <body>
@@ -20,19 +21,27 @@
     @clean="clean"  
     @deleterow="deleterow"
     @importjson="importjson"
-    :change_locale="change_locale"></myform>
- 
-    <information :storage="storage[0]"></information>
+    :change_locale="change_locale"
+    :up="up"
+    :upvalue="upvalue"
+    :down="down"
+    :downvalue="downvalue"
+    ></myform>
+ <div id="main">
+    <information :storage="storage[0]" :sort="sort"></information>
  
   <choosen_component  v-for="(value, index) in storage"
                     :key="index"
                     :choosen_one="value"
                     :index="index"
+                    :currentindex="currentindex"
+                    :choosenclass="choosenclass"
+                    :choosenclassapply="choosenclassapply"
                     @row='row'
                     @userchange="choose" 
                     >
         </choosen_component>
- 
+    </div>
    
 </div>
 <script src="FileSaver.js"></script>
@@ -40,8 +49,8 @@
 <script>
 Vue.component('myform', {
     props: 
-        ["choosen","currentKey", "currentIndex","storage","locale","lang","flag",//properties
-        'change_locale'],//methods
+        ["choosen","currentKey", "currentindex","storage","locale","lang","flag",//properties
+        'change_locale', 'up', 'down','upvalue','downvalue'],//methods
     data: function(){
         return {
             json_warning: ""
@@ -49,30 +58,52 @@ Vue.component('myform', {
     },
 
     template: `<div>
-                <div>Efectura table editor</div>
-                <input type="text" v-model="choosen.key" @click="log(choosen.key)"/>
+                <div id="title"><img src="img/logo.png" class="title">Efectura table editor &reg;</div>
+                <input id="myinput" type="text" v-model="choosen.key"/>
+                <div id="areadiv">
+                <textarea ref="myarea" resize="none"></textarea>
+                <span>{{json_warning}}</span>
+                </div>
+                <div class="buttoncontainer">
                 <span class="buttonTop" @click="save">{{lang?locale.save[0]:locale.save[1]}}</span>
                 <span class="buttonTop" @click="add">{{lang?locale.add[0]:locale.add[1]}}</span>
-                <span class="buttonTop" @click="deleterow">{{lang?locale.del_row[0]:locale.del_row[1]}}</span>
+                <span class="buttonTop" @click="deleterow">{{lang?locale.del_row[0]:locale.del_row[1]}}</span>               
+                </div>
+                <div class="buttoncontainer">
+                <span class="buttonTop" @click="up">{{lang?locale.up[0]:locale.up[1]}}</span>
+                <span class="buttonTop" @click="down">{{lang?locale.down[0]:locale.down[1]}}</span>
                 <span class="buttonTop" @click="clear">{{lang?locale.clear[0]:locale.clear[1]}}</span>
+                </div>
+                <div class="buttoncontainer">
                 <span class="buttonTop" @click="clean">{{lang?locale.clean[0]:locale.clean[1]}}</span>
-                <textarea ref="myarea"></textarea>
-                <span>{{json_warning}}</span>
+                <span class="buttonTop" @click="upvalue">{{lang?locale.upvalue[0]:locale.upvalue[1]}}</span>
+                <span class="buttonTop" @click="downvalue">{{lang?locale.downvalue[0]:locale.downvalue[1]}}</span>
+                </div>
+               
+                <div class="buttoncontainer">
                 <span class="buttonTop" @click="import_from_json">{{lang?locale.ipmjson[0]:locale.ipmjson[1]}}</span>
                 <span class="buttonTop" @click="export_to_json">{{lang?locale.expjson[0]:locale.expjson[1]}}</span>
-                <input type="file" id="inputnode">
                 <span class="buttonTop" @click="import_file">{{lang?locale.impfile[0]:locale.impfile[1]}}</span>
+                </div>
+                <div class="buttoncontainer">
                 <span class="buttonTop" @click="export_file">{{lang?locale.expfile[0]:locale.expfile[1]}}</span>
                 <span class="buttonTop" @click="import_csv">{{lang?locale.impcsv[0]:locale.impcsv[1]}}</span>
                 <span class="buttonTop" @click="export_csv">{{lang?locale.expcsv[0]:locale.expcsv[1]}}</span>
+                </div>
+                <div class="buttoncontainer">
                 <span class="buttonTop" @click='change_locale'>{{lang?locale.language[0]:locale.language[1]}}
                     <img src="img/planet.png" :class=flag>
                 </span>
+                <input type="file" name="inputnode" id="inputnode"/>
+                <label class="buttonTop" for="inputnode">{{lang?locale.label[0]:locale.label[1]}}</label>
+                <span class="buttonTop" >{{lang?locale.sort[0]:locale.sort[1]}}</span>
+                </div>
    
             </div>`,
     methods: {
-        log: function(choosen){
-            console.log(choosen.my)
+        dbclick: function(evt) {
+            evt.preventDefault();      
+            console.log(evt)
         },
         add: function(type){
             console.log("type");
@@ -155,8 +186,8 @@ fetch(a.value)
     }
 });
 Vue.component('choosen_component', {
-    props: ["choosen_one", "index"],
-    template: `<div v-on:click="row" class="d" >
+    props: ["choosen_one", "index", "currentindex","choosenclass","choosenclassapply"],
+    template: `<div v-on:click="row" :class=thisclass >
     
     <div class="content num">{{index+1}})</div>
     <div class="content" 
@@ -165,6 +196,28 @@ Vue.component('choosen_component', {
 
  
  </div>`,
+ data: function(){
+     return{
+         thisclass: this.choosenclass
+     }
+ },
+ watch: {
+          /*  currentindex: function (i) {
+                switch (i){
+                    case (this.index):
+                    this.thisclass = 'nn'
+                    //setTimeout(() => this.thisclass = this.choosenclass[0], 200)
+                    case (!this.index):
+                    this.thisclass = this.choosenclass[0]
+                    //default:this.thisclass = this.choosenclass
+                }
+                
+                
+                (i==this.index){
+                    this.thisclass = this.choosenclassapply;
+                }
+            }*/
+        },
     methods: {
         userChange: function(index, key){
             let temp = [index, key]
@@ -177,14 +230,19 @@ Vue.component('choosen_component', {
 });
 
 Vue.component('information', {
-    props: ["storage"],
+    props: ["storage", 'sort'],
     template: `
-    <div class="d">
+    <div class="item">
     <div class="info num">№</div>
-    <div class="info" v-for="(value, key) in storage">{{key}}</div>
- </div>
-`,
+    <div title="Sort" class="info" v-for="(value, key) in storage" @click="sort(key)">{{key | uppercase}} &uArr; &dArr;</div>
+ </div>`,
     methods: {
+    },
+    filters: {
+        uppercase(value) { 
+            return value.toUpperCase();
+        },
+        
     }
 });
 
@@ -200,37 +258,58 @@ Vue.component('information', {
 new Vue({
     el: "#myExel",
     data: {
-        locale: {save:['Save',"Сохранить"],language:['Swith language',"Поменять язык"],
-        ipmjson:['Import from JSON',"Импортировать из JSON"],expjson:['Export to JSON',"Экспортировать в JSON"],
-        add:['Add row',"Добавить строку"],del_row:['Delete row',"Удалить строку"],clear:['Reset choosen',"Убрать выделение"],
-        clean:['Clean',"Очистить ячейку"],
-        impfile:['Import JSON file',"Импортировать JSON файл"],expfile:['Export JSON file',"Экспортировать JSON файл"],
-        impcsv:['Import CSV file',"Импортировать CSV файл"],expcsv:['Export CSV file',"Экспортировать CSV файл"],
-        jsonwarn:['JSON expected',"Ошибка в JSON"],
+        locale: {
+            save:['Save changes',"Сохранить изменения"],
+            language:['Switch language',"Поменять язык"],
+            ipmjson:['Import from JSON',"Импортировать из JSON"],
+            expjson:['Export to JSON',"Экспортировать в JSON"],
+            add:['Add row',"Добавить строку"],
+            del_row:['Delete row',"Удалить строку"],
+            clear:['Reset choosen',"Убрать выделение"],
+            clean:['Empty value',"Очистить ячейку"],
+            up:['Move whole row up',"Сместить строку вверх"],
+            down:['Move whole row down',"Сместить строку вниз"],
+            impfile:['Import JSON file',"Импортировать JSON файл"],
+            expfile:['Export JSON file',"Экспортировать JSON файл"],
+            impcsv:['Import CSV file',"Импортировать CSV файл"],
+            expcsv:['Export CSV file',"Экспортировать CSV файл"],
+            jsonwarn:['JSON expected',"Ошибка в JSON"],
+            upvalue:['Move value up',"Сместить вверх"],
+            downvalue:['Move value down',"Сместить вниз"],
+            label:['Choose a file',"Выберете файл"],
+            sort:['Change sort flow',"Поменять сортировку"]
 
         },
+        choosenclass: "item",
+        choosenclassapply: "choosenitem",
         lang: true,
-        flag: "fflag",
+        flag: "flag",
+        storagecopy: undefined,
         storage:[
             {name:"John",value:"nice guy"},
-            {name:"Helen",value:"just helen"},
+            {name:"Helen",value:"just Helen"},
             {name:"Bill",value:"Gates"},
             {name:"Joe",value:"age - 35"},
-        
+            {name:"Arnold",value:"...the Terminator"},
+            {name:"Jane",value:"Smith"}
+    
         ],
         choosen:{key:""},
-        currentIndex: undefined,
+        currentindex: undefined,
         currentKey: undefined,
-        currentRow: undefined
+        currentRow: undefined,
+        sortdirection: true
     },
+
     methods:{
         choose: function(temp,index){
             console.log(temp[1]);
             this.choosen = {key: this.storage[temp[0]][temp[1]]};
-            this.currentIndex = temp[0];
+            this.currentindex = temp[0];
             this.currentKey = temp[1];
             this.currentRow = index;
             console.log(this.choosen.key);
+            if (this.currentRow==this.currentindex) this.choosenclass="item choosenitem"
         },
         add: function(type){
             console.log(type);
@@ -243,17 +322,17 @@ new Vue({
             
         },
         save: function(){
-            if (this.currentKey!=undefined && this.currentIndex!=undefined)
-        this.storage[this.currentIndex][this.currentKey] = this.choosen.key;           
+            if (this.currentKey!=undefined && this.currentindex!=undefined)
+        this.storage[this.currentindex][this.currentKey] = this.choosen.key;           
         },
         clear: function(){
-        this.currentIndex =undefined;
+        this.currentindex =undefined;
         this.currentKey = undefined;
         this.choosen.key = '';         
         },
         clean: function(){
-            if (this.currentKey!=undefined && this.currentIndex!=undefined)
-        this.storage[this.currentIndex][this.currentKey] = '';       
+            if (this.currentKey!=undefined && this.currentindex!=undefined)
+        this.storage[this.currentindex][this.currentKey] = '';       
         },
         row: function(row){
         this.currentRow = row; 
@@ -269,6 +348,78 @@ new Vue({
         },
         change_locale: function(){
             this.lang = !this.lang;
+        },
+            up: function(){
+            if (this.currentindex!=0 && this.currentindex!=undefined)
+            {let a =[...this.storage];//copy of storage
+            let b = a[this.currentindex];
+            let c = a[this.currentindex-1];
+            a[this.currentindex-1] = b;
+            a[this.currentindex] = c;
+            this.currentindex--;
+            this.storage = a;}
+            },
+            upvalue: function(){
+            if (this.currentindex!=0 && this.currentindex!=undefined)
+            {let a =[...this.storage];//copy of storage
+            let b = a[this.currentindex][this.currentKey];
+            let c = a[this.currentindex-1][this.currentKey];
+            a[this.currentindex-1][this.currentKey] = b;
+            a[this.currentindex][this.currentKey] = c;
+            this.currentindex--;
+            this.storage = a;}
+            },
+            down: function(){
+            if (this.currentindex!=this.storage.length-1 && this.currentindex!=undefined)
+            {let a =[...this.storage];//copy of storage
+            let b = a[this.currentindex];
+            let c = a[this.currentindex+1];
+            a[this.currentindex+1] = b;
+            a[this.currentindex] = c;
+            this.currentindex++;
+            this.storage = a;}
+            },downvalue: function(){
+            if (this.currentindex!=this.storage.length-1 && this.currentindex!=undefined)
+            {let a =[...this.storage];//copy of storage
+            let b = a[this.currentindex][this.currentKey];
+            let c = a[this.currentindex+1][this.currentKey];
+            a[this.currentindex+1][this.currentKey] = b;
+            a[this.currentindex][this.currentKey] = c;
+            this.currentindex++;
+            this.storage = a;}
+            },
+        sort: function(key){
+            console.log(this.sortdirection)
+            let m =[...this.storage];//copy of storage
+            this.storagecopy = [...m];
+
+function compare_name_ab(a,b) {
+  if ( a.name<b.name )  return -1;
+  if ( a.name>b.name )  return 1;
+  return 0;
+}
+function compare_name_ba(a,b) {
+  if ( a.name<b.name )  return 1;
+  if ( a.name>b.name )  return -1;
+  return 0;
+}
+function compare_value_ab(a,b) {
+  if ( a.value<b.value )  return -1;
+  if ( a.value>b.value )  return 1;
+  return 0;
+}
+function compare_value_ba(a,b) {
+  if ( a.value<b.value )  return 1;
+  if ( a.value>b.value )  return -1;
+  return 0;
+}
+if (key=="name" && this.sortdirection==true) {m.sort(compare_name_ab); this.sortdirection=false};
+if (key=="name" && this.sortdirection==false) {m.sort(compare_name_ba); this.sortdirection=true};
+if (key=="value" && this.sortdirection==true) {m.sort(compare_value_ab); this.sortdirection=false};
+if (key=="value" && this.sortdirection==false) {m.sort(compare_value_ba); this.sortdirection=true};
+
+console.log( m );
+this.storage = m;
         }
          
     }
