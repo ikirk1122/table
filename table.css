@@ -24,7 +24,6 @@ font-family: 'Open Sans Condensed', sans-serif;
     font-family: cursive;
     font-size: 1.5vw;
     display: block;
-    float: left;
     margin: 0 1vw;
     background-color: #91ffe136;
     border: 0;
@@ -123,9 +122,10 @@ textarea{
     border: 0;
     border-radius: 5px;
     resize: none;
-    height: 1.9vw;
-    width: 25%;
-    margin: 0 1vw;
+    height: 7.2vw;
+    width: 20%;
+    margin: 0.5vw;
+    float: left;
 }
 
 label:hover {
@@ -145,6 +145,8 @@ label:hover {
 }
 #menu{
     text-align: center;
+    display: inline-block;
+    margin: 0.5vw;
 }
 
 
@@ -218,7 +220,7 @@ label:hover {
             margin: 0.5vw 0vw;
         }
         textarea{
-            height: 3vw;
+            height: 10vw;
             width: 100%;
             margin: 0.5vw 0vw;
         
