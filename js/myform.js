@@ -83,12 +83,7 @@ Vue.component('myform', {//form component whitch containes own methods and calls
         file_change: function () {
             this.$refs.infoinput.value = this.$refs.fileinput.files[0].name;
         },
-        dbclick: function (evt) {
-            evt.preventDefault();
-            //console.log(evt)
-        },
         add: function (type) {
-            //console.log("type");
             this.$emit('add', "row")
         },
         clear: function () {
@@ -180,7 +175,6 @@ Vue.component('myform', {//form component whitch containes own methods and calls
                 let node = document.getElementById('inputnode');
                 let reader = new FileReader();
                 reader.onload = function () {
-                    //console.log(reader.result);
                     textareaa.value = reader.result;
                     fileinput.value = '';
                     fileinfo.value = '';
