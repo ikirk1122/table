@@ -119,7 +119,6 @@ Vue.component('myform', {//form component whitch containes own methods and calls
                 let node = document.getElementById('inputnode');
                 let reader = new FileReader();
                 reader.onload = function () {
-                    //console.log(reader.result.split('\r\n'));
                     let temp = reader.result.split('\r\n');
                     temp = temp.map(element => {
                         return element.split(';')
@@ -199,9 +198,9 @@ Vue.component('myform', {//form component whitch containes own methods and calls
 
         import_from_json: function () {
             let a; let error = false;
-            // if (this.$refs.myarea.value.length!=0 && this.$refs.myarea.value[0]=="["){
             try {
                 a = JSON.parse(this.$refs.myarea.value);
+                this.success();
             }
             catch (err) {
                 this.error()

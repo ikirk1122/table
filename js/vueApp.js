@@ -15,7 +15,7 @@ new Vue({
             up: ['Move whole row up', "Строку вверх"],
             down: ['Move whole row down', "Строку вниз"],
             impfile: ['Import JSON/TXT', "Импорт JSON/TXT"],
-            expfile: ['Export JSON file', "Экспорт JSON файл"],
+            expfile: ['Export JSON file', "Экспорт в JSON"],
             impcsv: ['Import CSV file', "Импорт CSV файл"],
             expcsv: ['Export CSV file', "Экспорт CSV файл"],
             upvalue: ['Move value up', "Сместить вверх"],
