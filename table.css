@@ -5,16 +5,16 @@ body{
 }
 
 .item{
-display: flex;
-justify-content: center;
-font-family: 'Open Sans Condensed', sans-serif;
+    display: flex;
+    justify-content: center;
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 #myinput{
     font-family: cursive;
     font-size: 1.5vw;
     display: block;
     float: left;
-    margin: 0 1vw;
+    margin: 0 0.5vw;
     background-color: #91ffe136;
     border: 0;
     border-radius: 5px;
@@ -31,13 +31,50 @@ font-family: 'Open Sans Condensed', sans-serif;
     border-radius: 5px;
     height: 2vw;
 }
+
+@keyframes MyAnimation1
+{
+    from { top: 10vh; opacity: 1;}
+    to { top: 0; opacity: 0;}
+}
+
+
+#message{
+
+    border: 0;
+    border-radius: 5px;
+    position: fixed;
+    width: fit-content;
+    z-index: 5;
+    margin: 0 auto;
+    opacity: 0;
+    justify-content: center;
+    text-align: center;
+    align-self: center;
+
+}
+
+.message_error{
+    background-color: rgba(255, 0, 0, 0.562);
+    animation: MyAnimation1 3s;
+    animation-timing-function: ease-in;
+}
+.message_success{
+    background-color: rgba(21, 255, 0, 0.514);
+    animation: MyAnimation1 3s;
+    animation-timing-function: ease-in;
+}
+
+.infodiv{
+    display: none;
+}
 .content{
-margin: 0;
-border: 1px solid black;
-background-color: rgba(191, 233, 135, 0.548);
-cursor: pointer;
-width: 45%;
-text-align: center;
+    margin: 0;
+    border: 1px solid black;
+    background-color: rgba(191, 233, 135, 0.548);
+    cursor: pointer;
+    width: 45%;
+    text-align: center;
 
 }
 .content:hover{
@@ -49,19 +86,19 @@ text-align: center;
 .info{
     margin: 0;
     border: 1px solid black;
-background-color: gainsboro;
-width: 45%;
-text-align: center;
+    background-color: gainsboro;
+    width: 45%;
+    text-align: center;
 
 }
 .num{
     width: 4%;
     }
 #forma{
-background-color: azure;
-font-size: 1.5vw;
-font-family: 'Playfair Display', serif;
-padding: 5px;
+    background-color: azure;
+    font-size: 1.5vw;
+    font-family: 'Playfair Display', serif;
+    padding: 5px;
 }
 .buttonTop{
     background-color: beige;
@@ -147,7 +184,7 @@ label:hover {
 #menu{
     text-align: center;
     display: inline-block;
-    margin: 0.5vw;
+    margin: 0.5vw 0;
 }
 
 
@@ -184,7 +221,7 @@ label:hover {
     font-size: 1.4vw;
     font-family: 'Playfair Display', serif;
     padding: 5px;
-    flex-basis: 35%;
+    flex-basis: 32%;
         }
         
 .buttoncontainer {
@@ -197,47 +234,49 @@ label:hover {
     font-size:2.5vw; 
     display: block;
 }
-        #myExel{
-            display: flex;
-        }
-        #main{
-            margin: 1.5vh 0 0 0;
-            clear: both;
-            font-size: 2.5vw;
-            flex-basis: 65%;
-        }
-        #title{
-            font-size: 3vw;
-        }  
-        #myinput{
-            height: 3vw;
-            width: 100%;
-            font-size: 3vw;
-            margin: 0.5vw 0vw;
-        }
-        #infoinput{
-            height: 3vw;
-            width: 100%;
-            font-size: 3vw;
-            margin: 0.5vw 0vw;
-        }
-        textarea{
-            height: 10vw;
-            width: 100%;
-            margin: 0.5vw 0vw;
-        
-        }
-        .title{
-            width: 3vw;
-            margin: 0;
-            top: 2px;
-            position: relative;;
-        }
-        .flag{
-            width: 3vw;
-            margin: 0;
-            top: 4px;
-            position: relative;;
-        }
-          
-    }
+.infodiv{
+    display: block;
+    font-size: 2vw;
+}
+#myExel{
+    display: flex;
+}
+#main{
+    margin: 1.5vh 0 0 0;
+    clear: both;
+    font-size: 2.5vw;
+    flex-basis: 65%;            
+}
+#title{
+    font-size: 2.8vw;
+}  
+#myinput{
+    height: 3vw;
+    width: 100%;
+    font-size: 3vw;
+    margin: 0.5vw 0vw;
+}
+#infoinput{
+    height: 3vw;
+    width: 100%;
+    font-size: 3vw;
+    margin: 0.5vw 0vw;
+}
+textarea{
+    height: 10vw;
+    width: 100%;
+    margin: 0.5vw 0vw;
+}
+.title{
+    width: 3vw;
+    margin: 0;
+    top: 2px;
+    position: relative;
+}
+.flag{
+    width: 3vw;
+    margin: 0;
+    top: 4px;
+    position: relative;
+}         
+}

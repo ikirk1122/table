@@ -1,61 +1,43 @@
-<!--test task Efectura from Shved Kirill-->
-<!--used only Vue.JS and FileSaver for Blob-->
-<!--also Google Fonts for CSS-->
+<!--test task Efectura from Shved Kirill I used only Vue.JS and FileSaver for Blob. Also Google Fonts for CSS-->
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Table Editor</title>
-<meta charset="utf-8" />
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Playfair+Display&display=swap" rel="stylesheet">
-<link href="table.css" rel="stylesheet">
-<link rel="shortcut icon" href="img/favicon.png" type="image/png">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Table Editor</title>
+    <meta charset="utf-8" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Playfair+Display&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="normalize.css" type="text/css">
+
+    <link href="table.css" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-<div id="myExel">
-    <myform id="forma"
-    :choosen="choosen"
-    :storage="storage" 
-    :locale="locale"
-    :lang="lang"
-    :flag="flag"
-    @add="add" 
-    @save="save"
-    @clear="clear"
-    @clean="clean"  
-    @deleterow="deleterow"
-    @importjson="importjson"
-    :change_locale="change_locale"
-    :up="up"
-    :upvalue="upvalue"
-    :down="down"
-    :downvalue="downvalue"
-    :cleantable="cleantable"
-    :switchvalue="switchvalue"
     
-    
-    ></myform>
-    <div id="main">
-        <information :storage="storage[0]" :sort="sort"></information>
-        <view_component  v-for="(value, index) in storage"
-                    :key="index"
-                    :choosen_one="value"
-                    :index="index"
-                    :currentindex="currentindex"
-                    :choosenclass="choosenclass"
-                    :choosenclassapply="choosenclassapply"
-                    @row='row'
-                    @userchange="choose" 
-                    >
-        </view_component>
-    </div> 
-</div>
-<script src="FileSaver.js"></script>
-<script src="https://unpkg.com/vue"></script>
-<script src="js/myform.js"></script>
-<script src="js/view_info_component.js"></script>
-<script src="js/vueApp.js"></script>
+    <div id="myExel">
+        <div id="message" ref='message'></div>
+        <myform id="forma" :choosen="choosen" :storage="storage" :locale="locale" :lang="lang" :flag="flag" @add="add"
+            @save="save" @clear="clear" @clean="clean" @deleterow="deleterow" @importjson="importjson"
+            :change_locale="change_locale" :up="up" :upvalue="upvalue" :down="down" :downvalue="downvalue"
+            :cleantable="cleantable" :switchvalue="switchvalue"></myform>
+        <div id="main">
+            <information :storage="storage[0]" :sort="sort"></information>
+            <view_component v-for="(value, index) in storage" :key="index" :choosen_one="value" :index="index"
+                :currentindex="currentindex" :choosenclass="choosenclass" :choosenclassapply="choosenclassapply"
+                @row='row' @userchange="choose">
+            </view_component>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="js/FileSaver.js"></script>
+    <script src="js/myform.js"></script>
+    <script src="js/view.js"></script>
+    <script src="js/info.js"></script>
+    <script src="js/vueApp.js"></script>
 
 </body>
+
 </html>

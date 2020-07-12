@@ -1,12 +1,7 @@
 Vue.component('myform', {//form component whitch containes own methods and calls Vue.app methods
-    props: 
-        ["choosen","currentKey", "currentindex","storage","locale","lang","flag",//properties
-        'change_locale', 'up', 'down','upvalue','downvalue','cleantable','switchvalue'],//methods
-    data: function(){
-        return {
-            json_warning: ""
-        }
-    },
+    props:
+        ["choosen", "currentKey", "currentindex", "storage", "locale", "lang", "flag",//properties
+            'change_locale', 'up', 'down', 'upvalue', 'downvalue', 'cleantable', 'switchvalue'],//methods
 
     template: `
     <div>
@@ -14,10 +9,12 @@ Vue.component('myform', {//form component whitch containes own methods and calls
                     <img src="img/logo.png" class="title">Efectura &ndash; {{lang?locale.efectura[0]:locale.efectura[1]}} &reg;
                 </div>
                 <div id="holder"></div>
+                <div class="infodiv">{{lang?locale.infodiv1[0]:locale.infodiv1[1]}}</div>
                 <input id="myinput" type="text" v-model="choosen.key"/>
-                <input id="infoinput" type="text" ref="infoinput" readonly="true"/>          
+                <div class="infodiv">{{lang?locale.infodiv2[0]:locale.infodiv2[1]}}</div>
+                <input id="infoinput" type="text" ref="infoinput" readonly="true"/>  
+                <div class="infodiv">{{lang?locale.infodiv3[0]:locale.infodiv3[1]}}</div>        
                 <textarea ref="myarea" resize="none"></textarea>
-                <span>{{json_warning}}</span>
                 
        
             <div id="menu">
@@ -42,14 +39,17 @@ Vue.component('myform', {//form component whitch containes own methods and calls
                         <img src="img/down-arrow.png" :class=flag></span>
                 </div>
                 <div class="buttoncontainer">
-                    <span class="buttonTop" @click="clean">{{lang?locale.clean[0]:locale.clean[1]}}
-                        <img src="img/clean.png" :class=flag></span>
+
+            <span class="buttonTop" @click="switchvalue">{{lang?locale.switchvalue[0]:locale.switchvalue[1]}}
+                <img src="img/switch.png" :class=flag></span> 
+                <span class="buttonTop" @click="clean">{{lang?locale.clean[0]:locale.clean[1]}}
+                <img src="img/clean-one.png" :class=flag></span>
+                <span class="buttonTop" @click="cleantable">{{lang?locale.cleantable[0]:locale.cleantable[1]}}
+                <img src="img/delete-table.png" :class=flag></span>               
+
                     <span class="buttonTop" @click='text_area_clean' >{{lang?locale.text_area_clean[0]:locale.text_area_clean[1]}}
                         <img src="img/clean.png" :class=flag></span>
-                    <span class="buttonTop" @click="cleantable">{{lang?locale.cleantable[0]:locale.cleantable[1]}}
-                        <img src="img/delete-table.png" :class=flag></span>
-                    <span class="buttonTop" @click="switchvalue">{{lang?locale.swithvalue[0]:locale.swithvalue[1]}}
-                        <img src="img/switch.png" :class=flag></span>              
+             
                 </div>             
                 <div class="buttoncontainer">
                 <span class="buttonTop" @click="import_from_json">{{lang?locale.ipmjson[0]:locale.ipmjson[1]}}
@@ -77,124 +77,144 @@ Vue.component('myform', {//form component whitch containes own methods and calls
    
     </div>`,
     methods: {
-        text_area_clean: function (){
-            this.$refs.myarea.innerText = "";
-            this.$refs.myarea.innerHTML = "";
-            //this.$refs.myarea.value = "";
+        text_area_clean: function () {
+            this.$refs.myarea.value = "";
         },
-        file_change: function(){
-this.$refs.infoinput.value = this.$refs.fileinput.files[0].name;
+        file_change: function () {
+            this.$refs.infoinput.value = this.$refs.fileinput.files[0].name;
         },
-        dbclick: function(evt) {
-            evt.preventDefault();      
+        dbclick: function (evt) {
+            evt.preventDefault();
             //console.log(evt)
         },
-        add: function(type){
+        add: function (type) {
             //console.log("type");
-            this.$emit('add', "row")        
+            this.$emit('add', "row")
         },
-        clear: function(){
-            this.$emit('clear')},
-        clean: function(){
-            this.$emit('clean')},
-        save: function(){
-            this.$emit('save')},
-        deleterow: function(){
-            this.$emit('deleterow')},
-        export_to_json:  function(){
-             this.text_area_clean();
-            this.$refs.myarea.innerText = JSON.stringify(this.storage);    
+        clear: function () {
+            this.$emit('clear')
         },
-        export_file: function(){
-            let a= JSON.stringify(this.storage);
-            var blob = new Blob([a], {type: "text/plain;charset=utf-8"});saveAs(blob, "table.json");
+        clean: function () {
+            this.$emit('clean')
         },
-        import_csv: function(){
-              try{ 
+        save: function () {
+            this.$emit('save')
+        },
+        deleterow: function () {
+            this.$emit('deleterow')
+        },
+        export_to_json: function () {
+            this.text_area_clean();
+            this.$refs.myarea.value = JSON.stringify(this.storage);
+        },
+        export_file: function () {
+            let a = JSON.stringify(this.storage);
+            var blob = new Blob([a], { type: "text/plain;charset=utf-8" }); saveAs(blob, "table.json");
+        },
+        import_csv: function () {
+            try {
                 let fileinput = this.$refs.fileinput;
                 let fileinfo = this.$refs.infoinput;
-                let textareaa  =  this.$refs.myarea;
+                let textareaa = this.$refs.myarea;
                 let node = document.getElementById('inputnode');
-let reader = new FileReader();
-reader.onload = function (){
-    //console.log(reader.result.split('\r\n'));
-    let temp = reader.result.split('\r\n');
-    temp = temp.map(element => { return element.split(';') 
-    });
-    let result = [];
-    for (let i=1; i<temp.length-1; i++){
-        let obj = {};
-        obj[temp[0][0]]=(temp[i][0]);
-        obj[temp[0][1]]=(temp[i][1]);
-result.push(obj)
-    }
-    textareaa.innerText = JSON.stringify(result);
-    fileinput.value = '';
-    fileinfo.value = '';
-    alert("Success")
-}
-reader.readAsText(node.files[0])
-              }
-              catch(err){
-                if (err.name=="TypeError") alert('Failed '+'Check Your CSV file')
-              }
+                let reader = new FileReader();
+                reader.onload = function () {
+                    //console.log(reader.result.split('\r\n'));
+                    let temp = reader.result.split('\r\n');
+                    temp = temp.map(element => {
+                        return element.split(';')
+                    });
+                    let result = [];
+                    for (let i = 1; i < temp.length - 1; i++) {
+                        let obj = {};
+                        obj[temp[0][0]] = (temp[i][0]);
+                        obj[temp[0][1]] = (temp[i][1]);
+                        result.push(obj)
+                    }
+                    textareaa.value = JSON.stringify(result);
+                    fileinput.value = '';
+                    fileinfo.value = '';
+
+                }
+                this.success();
+                reader.readAsText(node.files[0])
+            }
+            catch (err) {
+                if (err.name == "TypeError") this.error()
+            }
         },
-        export_csv: function(){
-            this.$refs.myarea.innerText="";
-            this.$refs.myarea.value="";
+        error: function () {
+            if (this.lang == true) document.getElementById('message').innerText = "Check your file!"
+            else if (this.lang == false) document.getElementById('message').innerText = "Проверьте файл!"
+            document.getElementById('message').style.left = window.innerWidth / 2 - (document.getElementById('message').offsetWidth) /2 + "px";
+            document.getElementById('message').className = "message_error";
+            setTimeout(this.undo, 3000);
+        },
+        success: function () {
+            if (this.lang == true) document.getElementById('message').innerText = "Success!"
+            else if (this.lang == false) document.getElementById('message').innerText = "Файл загружен успешно!"
+            document.getElementById('message').style.left = window.innerWidth / 2 - (document.getElementById('message').offsetWidth) /2 + "px";
+            document.getElementById('message').className = "message_success";
+            setTimeout(this.undo, 3000);
+        },
+        undo: function () {
+            document.getElementById('message').innerText = ""
+            document.getElementById('message').className = "";
+        },
+        export_csv: function () {
+            this.$refs.myarea.value = "";
 
             let data = [...this.storage];
-data = data.map(el =>{ return el.name + ";"+el.value + "\r\n"; });
-data.unshift("name;value"+ "\r\n");
-data = data.join('');
-//console.log(data);
-    var blob = new Blob([data], {type: 'text/csv;charset=utf-8'});
-    saveAs(blob, "table.csv");
+            data = data.map(el => { return el.name + ";" + el.value + "\r\n"; });
+            data.unshift("name;value" + "\r\n");
+            data = data.join('');
+            //console.log(data);
+            var blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
+            saveAs(blob, "table.csv");
         },
-        import_file: function(){ 
-            try{
+        import_file: function () {
+            try {
                 let fileinput = this.$refs.fileinput;
                 let fileinfo = this.$refs.infoinput;
-                let textareaa  =  this.$refs.myarea;   
+                let textareaa = this.$refs.myarea;
 
-let node = document.getElementById('inputnode');
-let reader = new FileReader();
-reader.onload = function (){
-    //console.log(reader.result);
-    textareaa.innerText = reader.result;
-    fileinput.value = '';
-    fileinfo.value = '';
-    alert("Success")
-}
-reader.readAsText(node.files[0]);}
-catch(err){
-    if (err.name=="TypeError") alert('Failed '+'Check Your JSON file')
-}
+                let node = document.getElementById('inputnode');
+                let reader = new FileReader();
+                reader.onload = function () {
+                    //console.log(reader.result);
+                    textareaa.value = reader.result;
+                    fileinput.value = '';
+                    fileinfo.value = '';
+
+                }
+                this.success();
+                reader.readAsText(node.files[0]);
+            }
+            catch (err) {
+                if (err.name == "TypeError") this.error()
+            }
 
 
         },
-        
-        import_from_json: function(){
-            let a; let error = false;                
-           // if (this.$refs.myarea.value.length!=0 && this.$refs.myarea.value[0]=="["){
-               try{
-                   a = JSON.parse(this.$refs.myarea.value);
-                   this.json_warning=""
-                   }
-                   catch(err){
-                       alert('Check Your JSON')
-                       if (this.lang) this.json_warning=this.locale.jsonwarn[0]
-                      else this.json_warning=this.locale.jsonwarn[1];
-                       error=true;
-                   }
-            
-           if (a !=undefined && error==false) {
-               this.$emit('importjson', a);
-               this.$refs.fileinput.value = '';
-               this.$refs.infoinput.value = '';
-           }
-  
-            this.$refs.fileinput.value = '';this.$refs.infoinput.value = '';
+
+        import_from_json: function () {
+            let a; let error = false;
+            // if (this.$refs.myarea.value.length!=0 && this.$refs.myarea.value[0]=="["){
+            try {
+                a = JSON.parse(this.$refs.myarea.value);
+            }
+            catch (err) {
+                this.error()
+                error = true;
+            }
+
+            if (a != undefined && error == false) {
+                this.$emit('importjson', a);
+                this.$refs.fileinput.value = '';
+                this.$refs.infoinput.value = '';
+            }
+
+            this.$refs.fileinput.value = ''; this.$refs.infoinput.value = '';
         }
     }
 });
